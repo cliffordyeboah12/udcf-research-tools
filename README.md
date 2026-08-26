@@ -9,7 +9,7 @@ The purpose of this package is to provide full transparency and reproducibility 
 
 | File Name | Description |
 | :--- | :--- |
-| `udcf_raw_data.csv` | Raw experimental dataset containing 100 trials, including material properties, kinematic inputs, and calculated $\eta$ outcomes. |
+| `udcf_raw_data.csv` | Raw experimental dataset containing 100 trials, including material properties, kinematic inputs, and calculated eta outcomes. |
 | `udcf_reproducibility_script.m` | MATLAB script designed to reproduce the Mean, Standard Deviation, and Coefficient of Variation (CV%) values reported in Table 1. |
 | `udcf_benchmark.py` | Python script to verify the UDCF formula against the validation matrix and benchmark scenarios (Axe vs. Wood, Scalpel vs. Tissue, etc.). |
 
@@ -28,6 +28,4 @@ The purpose of this package is to provide full transparency and reproducibility 
 
 #### 2. Verifying UDCF Benchmarks (Python)
 1. Ensure `udcf_benchmark.py` and `udcf_raw_data.csv` are in the same folder.
-2. Run the script via terminal/command prompt:
-   ```bash
-   python udcf_benchmark.py
+2. Run the script via terminal/command prompt: python udcf_benchmark.py
