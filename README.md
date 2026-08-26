@@ -34,3 +34,6 @@ Where:
 ### Prerequisites
 - Python 3.8+
 - Pandas, Matplotlib (for running the benchmark scripts)
+
+### Reproducing Results
+To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script: python scripts/udcf_benchmark.py
