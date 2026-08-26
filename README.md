@@ -8,7 +8,7 @@ This package is designed to ensure full reproducibility of the results presented
 The Universal Dimensionless Cutting Framework (UDCF) utilizes a dimensionless efficiency index ($\eta$) to predict phenomenological outcomes (Severance vs. Deformation) across multi-scale cutting scenarios.
 
 The core governing equation used in these tools is:
-$$\eta = \frac{k_Y \cdot m \cdot v^2}{2 \cdot d \cdot \tau_{ult} \cdot A}$$
+η = k_Y [(m v²) / (2 d \tau_{ult} A)], where m is mass, v is velocity, d is thickness, τult is ultimate shear strength, and A is contact area.
 
 ## 📁 Repository Structure
 - `/scripts`: 
@@ -26,6 +26,4 @@ $$\eta = \frac{k_Y \cdot m \cdot v^2}{2 \cdot d \cdot \tau_{ult} \cdot A}$$
 - NumPy
 
 ### Reproducing Results
-To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script:
-```bash
-python scripts/udcf_benchmark.py
+To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script: python scripts/udcf_benchmark.py
