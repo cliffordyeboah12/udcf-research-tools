@@ -1,4 +1,4 @@
-# UDCF Research Tools: Unified Dimensionless Cutting Framework
+# UDCF Research Tools: Unified Dimensionless Cutting Framework 10.5281/zenodo.22112131
 
 This repository contains the official source code, benchmark scripts, and raw experimental datasets for the **UDCF Profiler v3.1** and the **Instrumented Pendulum Rig v2.1**. 
 
