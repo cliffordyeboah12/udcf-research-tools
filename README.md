@@ -26,4 +26,4 @@ The core governing equation used in these tools is:
 - NumPy
 
 ### Reproducing Results
-To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script: python scripts/udcf_benchmark.py
+To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script: python udcf_benchmark.py
