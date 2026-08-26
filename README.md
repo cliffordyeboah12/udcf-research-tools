@@ -1,7 +1,7 @@
 # UDCF Research Tools: Reproducibility Package
 
 ## Overview
-This repository contains the raw experimental data and validation scripts for the **Unified Dimensionless Cutting Framework (UDCF)**, as presented in the manuscript by *Clifford Yeboah et al.* 
+This repository contains the raw experimental data and validation scripts for the **Unified Dimensionless Cutting Framework (UDCF)**, as presented in the manuscript by *Clifford Yeboah, Lead Researcher, The Yeboah Institute. ORCID ID: https://orcid.org/0009-0000-9001-2643* 
 
 The purpose of this package is to provide full transparency and reproducibility for the statistical analysis (Table 1) and the benchmark efficiency calculations (Table 4) discussed in the study.
 
