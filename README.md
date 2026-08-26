@@ -1,31 +1,31 @@
-# UDCF Research Tools: Reproducibility Package
+# UDCF Research Tools: Universal Dimensionless Cutting Framework
 
-## Overview
-This repository contains the raw experimental data and validation scripts for the **Unified Dimensionless Cutting Framework (UDCF)**, as presented in the manuscript by *Clifford Yeboah. Lead Researcher, The Yeboah Institute. ORCID ID: https://orcid.org/0009-0000-9001-2643* 
+This repository contains the official source code, benchmark scripts, and raw experimental datasets for the **UDCF Profiler v3.1** and the **Instrumented Pendulum Rig v2.1**. 
 
-The purpose of this package is to provide full transparency and reproducibility for the statistical analysis (Table 1) and the benchmark efficiency calculations (Table 4) discussed in the study.
+This package is designed to ensure full reproducibility of the results presented in the associated manuscript, specifically Tables 1–4 and Figures 3 and 4.
 
-## Repository Contents
+## 📊 Project Overview
+The Universal Dimensionless Cutting Framework (UDCF) utilizes a dimensionless efficiency index ($\eta$) to predict phenomenological outcomes (Severance vs. Deformation) across multi-scale cutting scenarios.
 
-| File Name | Description |
-| :--- | :--- |
-| `udcf_raw_data.csv` | Raw experimental dataset containing 100 trials, including material properties, kinematic inputs, and calculated eta outcomes. |
-| `udcf_reproducibility_script.m` | MATLAB script designed to reproduce the Mean, Standard Deviation, and Coefficient of Variation (CV%) values reported in Table 1. |
-| `udcf_benchmark.py` | Python script to verify the UDCF formula against the validation matrix and benchmark scenarios (Axe vs. Wood, Scalpel vs. Tissue, etc.). |
+The core governing equation used in these tools is:
+$$\eta = \frac{k_Y \cdot m \cdot v^2}{2 \cdot d \cdot \tau_{ult} \cdot A}$$
 
-## Getting Started
+## 📁 Repository Structure
+- `/scripts`: 
+    - `udcf_benchmark.py`: Python script to reproduce the calculation of $\eta$ for all experimental trials and theoretical extrapolations.
+- `/data`:
+    - `raw_per_trial_table1.csv`: The 5-trial repeat dataset used for statistical validation of material "fingerprints."
+    - `extrapolation_100_trials.csv`: The comprehensive 100-trial dataset covering scenarios from surgical scalpels to industrial shredders.
+- `/docs`: Documentation regarding the Instrumented Pendulum Rig calibration.
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- **For MATLAB Script:** MATLAB (R2020a or later recommended).
-- **For Python Script:** Python 3.x and the `pandas` library.
+- Python 3.x
+- Pandas
+- NumPy
 
-### Execution Instructions
-
-#### 1. Reproducing Table 1 Statistics (MATLAB)
-1. Open MATLAB and navigate to the directory containing `udcf_reproducibility_script.m`.
-2. Run the script by typing `udcf_reproducibility_script` in the Command Window.
-3. The output will display the statistical verification for Dermis, HDPE, and other materials, matching the manuscript's Table 1.
-
-#### 2. Verifying UDCF Benchmarks (Python)
-1. Ensure `udcf_benchmark.py` and `udcf_raw_data.csv` are in the same folder.
-2. Run the script via terminal/command prompt: python udcf_benchmark.py
+### Reproducing Results
+To verify the calculations for Tables 1, 2, and 5 in the manuscript, run the benchmark script:
+```bash
+python scripts/udcf_benchmark.py
