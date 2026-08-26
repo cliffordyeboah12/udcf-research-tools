@@ -8,7 +8,7 @@ This package is designed to ensure full reproducibility of the results presented
 The Universal Dimensionless Cutting Framework (UDCF) utilizes a dimensionless efficiency index ($\eta$) to predict phenomenological outcomes (Severance vs. Deformation) across multi-scale cutting scenarios.
 
 The core governing equation used in these tools is:
-η = k_Y [(m v²) / (2 d \tau_{ult} A)], where m is mass, v is velocity, d is thickness, τult is ultimate shear strength, and A is contact area.
+η = kY [(m v²) / (2 d τult A)], where m is mass, v is velocity, d is thickness, τult is ultimate shear strength, A is contact area, and kY is Systemic Energy Recovery Factor.
 
 ## 📁 Repository Structure
 - `/scripts`: 
