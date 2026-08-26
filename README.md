@@ -8,7 +8,7 @@ This package is designed to ensure full reproducibility of the results presented
 The Unified Dimensionless Cutting Framework (UDCF) utilises a dimensionless separation index ($\eta$) to predict phenomenological outcomes (Severance vs. Deformation) across multi-scale cutting scenarios.
 
 The core governing equation used in these tools is:
-η = kY [(m v²) / (2 d τult A)], where m is mass, v is velocity, d is thickness, τult is ultimate shear strength, A is contact area, and kY is Systemic Energy Recovery Factor.
+$\eta$ = kY [(m v²) / (2 d τult A)], where m is mass, v is velocity, d is thickness, τult is ultimate shear strength, A is contact area, and kY is Systemic Energy Recovery Factor.
 
 ## 📁 Repository Structure
 - `/scripts`: 
