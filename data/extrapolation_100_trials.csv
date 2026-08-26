@@ -1,0 +1,6 @@
+Trial,Tool,Material,m_kg,v_ms,d_m,tau_pa,A_m2,eta,Outcome
+1,Razor blade,Human hair,0.01,2.0,5.00e-05,1.5e8,5.00e-12,533333.33,Success
+4,Bone saw,Beef femur,0.45,3.2,0.005,8.0e7,2.50e-07,23.04,Success
+7,Butter knife,Hemp rope,0.12,3.8,0.018,1.0e8,2.20e-04,0.006,Success
+47,Chainsaw mill,Hardwood log,4.0,12.0,0.3,6.0e7,2.00e-04,0.24,Failure
+71,Nanotube blade,Carbon nanotube,0.00005,0.1,5.0e-09,5.0e8,1.0e-16,1.0e6,Success
