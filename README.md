@@ -12,7 +12,7 @@ The core governing equation used in these tools is:
 
 ## 📁 Repository Structure
 - `/scripts`: 
-    - `udcf_benchmark.py`: Python script to reproduce the calculation of $\eta$ for all experimental trials and theoretical extrapolations.
+    - `udcf_benchmark.py`: Python script to reproduce the calculation of η for all experimental trials and theoretical extrapolations.
 - `/data`:
     - `raw_per_trial_table1.csv`: The 5-trial repeat dataset used for statistical validation of material "fingerprints."
     - `extrapolation_100_trials.csv`: The comprehensive 100-trial dataset covering scenarios from surgical scalpels to industrial shredders.
