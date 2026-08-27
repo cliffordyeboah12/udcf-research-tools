@@ -1,6 +1,101 @@
-Trial,Tool,Material,m_kg,v_ms,d_m,tau_pa,A_m2,eta,Outcome
-1,Razor blade,Human hair,0.01,2.0,5.00e-05,1.5e8,5.00e-12,533333.33,Success
-4,Bone saw,Beef femur,0.45,3.2,0.005,8.0e7,2.50e-07,23.04,Success
-7,Butter knife,Hemp rope,0.12,3.8,0.018,1.0e8,2.20e-04,0.006,Success
-47,Chainsaw mill,Hardwood log,4.0,12.0,0.3,6.0e7,2.00e-04,0.24,Failure
-71,Nanotube blade,Carbon nanotube,0.00005,0.1,5.0e-09,5.0e8,1.0e-16,1.0e6,Success
+Trial,Tool,Material,m_kg,v_ms,d_m,tau_pa,A_m2,k_Y,eta,Outcome
+1,Razor blade,Human hair,0.01,2,5.00e-5,1.50e+8,5.00e-12,0.92,490666.67,Success
+2,Surgical scalpel,Porcine tissue,0.025,1.2,1.00e-4,2.50e+6,1.20e-10,0.92,552000.00,Success
+3,Chef's knife,Tomato,0.3,1.5,1.00e-3,5.00e+5,8.00e-9,0.65,67500.00,Success
+4,Bone saw,Beef femur,0.45,3.2,5.00e-3,8.00e+7,2.50e-7,0.92,21.20,Success
+5,Felling axe,Oak wood,1.8,10,2.00e-2,5.00e+7,3.00e-6,0.85,25.50,Success
+6,Pruning shears,Rose stem,0.25,2.5,5.00e-4,3.00e+7,1.50e-7,0.85,295.14,Success
+7,Butter knife,Hemp rope,0.12,3.8,1.80e-2,1.00e+8,2.20e-4,0.85,0.00,Success
+8,Metal shears,Aluminum sheet,0.5,3,5.00e-4,1.50e+8,5.00e-7,0.72,43.20,Success
+9,Diamond scalpel,Human cornea,0.015,0.5,5.00e-5,1.80e+7,2.00e-11,0.92,95833.33,Success
+10,Rock drill,Granite,2,8,1.00e-1,2.00e+8,1.00e-5,0.65,0.21,Success
+11,Laser cutter,Titanium foil,0.001,300000000,1.00e-4,5.00e+8,1.00e-12,0.72,648000000000000000000.00,Success
+12,Ceramic knife,Silicone gel,0.15,0.8,2.00e-3,1.00e+6,1.50e-8,0.92,1472.00,Success
+13,Chainsaw,Pine resin,3,15,1.50e-1,3.00e+7,2.50e-4,0.85,0.26,Failure
+14,Glass cutter,Tempered glass,0.05,0.3,5.00e-3,7.00e+8,1.00e-9,0.65,0.42,Failure
+15,Plasma torch,Steel plate,0.002,1000000,1.00e-2,4.00e+8,5.00e-10,0.72,360000000000.00,Success
+16,Obsidian blade,Leather,0.08,4,1.00e-4,3.00e+7,5.00e-11,0.92,3925333.33,Success
+17,Microtome,Plant cell,0.001,0.2,2.00e-6,1.00e+6,1.00e-13,0.92,92000000.00,Success
+18,Circular saw,Plastic,1.2,12,1.00e-2,5.00e+7,1.00e-5,0.8,13.82,Success
+19,Waterjet,Marble,0.0005,600,5.00e-2,6.00e+7,1.00e-8,0.65,1950.00,Success
+20,Ultrasonic cutter,Rubber,0.1,0.5,5.00e-3,5.00e+6,1.00e-7,0.8,4.00,Success
+21,Wire cutters,Copper wire,0.08,4.5,2.00e-4,1.20e+8,1.00e-8,0.72,2430.00,Success
+22,Chisel,Concrete,0.6,6,5.00e-2,3.50e+7,5.00e-5,0.65,0.08,Failure
+23,Industrial laser,Acrylic,0.002,300000000,3.00e-3,2.00e+7,2.00e-9,0.8,600000000000000000.00,Success
+24,Scissors,Paper,0.1,1.2,1.00e-4,1.00e+6,1.50e-8,0.85,40800.00,Success
+25,Tree lopper,Branch,1.2,8.5,3.00e-2,4.00e+7,8.00e-6,0.85,3.84,Success
+26,Glass knife,Quartz,0.02,0.4,2.00e-3,1.50e+9,5.00e-10,0.65,0.69,Failure
+27,Plasma scalpel,Biological gel,0.005,200000,1.00e-3,5.00e+4,1.00e-11,0.92,184000000000000032.00,Success
+28,Circular saw,Plywood,1.5,15,1.50e-2,3.00e+7,2.00e-5,0.85,15.94,Success
+29,Machete,Jungle vine,0.75,12,5.00e-3,2.00e+7,1.00e-6,0.85,459.00,Success
+30,Nanotube blade,Cell membrane,0.0001,0.1,1.00e-7,1.00e+5,1.00e-15,0.92,46000000000.00,Success
+31,Obsidian arrowhead,Deer tendon,0.03,15,2.00e-4,5.00e+7,1.00e-9,0.92,310500.00,Success
+32,Cryo-cutter,Frozen solvent,0.3,0.3,5.00e-3,1.00e+6,1.00e-7,0.8,21.60,Success
+33,Ultrasonic probe,Calcified tissue,0.05,0.6,1.00e-3,8.00e+7,2.00e-9,0.92,51.75,Success
+34,Drill bit,Hard plastic,0.1,20,5.00e-3,7.00e+7,1.00e-7,0.8,457.14,Success
+35,Electron beam,Gold film,0.0005,10000000,5.00e-7,1.00e+9,1.00e-14,0.72,3.6e+21,Success
+36,Ceramic shears,Carbon fiber,0.18,2.5,2.00e-3,8.00e+8,5.00e-8,0.8,5.62,Success
+37,Jigsaw,Fiberboard,0.4,3,1.00e-2,2.50e+7,3.00e-6,0.85,2.04,Success
+38,Micro-scalpel,Insect exoskeleton,0.001,0.1,5.00e-6,1.00e+8,1.00e-13,0.92,92000.00,Success
+39,Water jet,Granite,0.001,600,1.00e-1,2.00e+8,5.00e-9,0.65,1170.00,Success
+40,Flame torch,Steel beam,0.005,500,5.00e-2,4.00e+8,2.00e-7,0.72,112.50,Success
+41,Guillotine,Carton box,1.2,4,2.00e-3,1.00e+6,5.00e-6,0.85,816.00,Success
+42,Nano-blade,Graphene,0.0002,0.3,1.00e-8,2.00e+9,5.00e-16,0.65,585000000.00,Success
+43,Tin snips,Sheet metal,0.3,3.5,1.00e-3,2.00e+8,2.00e-7,0.72,33.07,Success
+44,Scythe,Wheat stalk,0.8,8,5.00e-4,2.00e+6,5.00e-6,0.85,4352.00,Success
+45,Cryogenic scalpel,Frozen protein,0.02,0.4,1.00e-4,5.00e+7,1.00e-10,0.92,2944.00,Success
+46,Plasma knife,Composite alloy,0.008,50000,5.00e-4,3.00e+8,5.00e-10,0.72,96000000000.00,Success
+47,Chainsaw mill,Hardwood log,4,12,3.00e-1,6.00e+7,2.00e-4,0.85,0.07,Failure
+48,Ultrasonic welder,Polymer sheet,0.1,0.6,2.00e-3,1.00e+7,1.00e-7,0.8,7.20,Success
+49,Ice pick,Glacial ice,0.15,3,2.00e-1,5.00e+6,1.00e-6,0.65,0.44,Failure
+50,Nanowire cutter,DNA strand,0.00001,0.05,1.00e-9,1.00e+7,1.00e-18,0.92,1150000000000.00,Success
+51,Reaper blade,Rice stalk,0.4,6,3.00e-4,1.50e+6,2.00e-6,0.85,6800.00,Success
+52,Electrosurgical unit,Burn tissue,0.002,10000,2.00e-4,3.00e+5,5.00e-11,0.92,30666666666666.67,Success
+53,Circular blade,Rubber tire,0.7,10,2.00e-2,1.00e+8,5.00e-5,0.8,0.28,Success
+54,Micromechanical probe,Microchip,0.0005,0.2,5.00e-6,3.00e+8,2.00e-12,0.72,2400.00,Success
+55,Laser microtome,Thin film,0.0003,200000000,1.00e-6,5.00e+8,5.00e-14,0.8,1.92e+23,Success
+56,Abrasive saw,Concrete rebar,2.5,8,5.00e-2,8.00e+7,1.00e-4,0.72,0.14,Success
+57,Ceramic scalpel,Adipose tissue,0.03,0.7,5.00e-4,2.00e+5,1.00e-9,0.92,67620.00,Success
+58,Tree feller,Softwood,3.5,10,3.00e-1,3.00e+7,5.00e-4,0.85,0.03,Success
+59,Diamond wire,Sapphire,0.05,1,1.00e-2,2.00e+9,1.00e-8,0.65,0.08,Success
+60,Hybrid waterjet,Tungsten,0.01,800,3.00e-2,6.00e+8,1.00e-8,0.72,12800.00,Success
+61,Nano-serrated blade,Silicon wafer,0.0008,0.25,2.00e-6,1.20e+9,5.00e-14,0.65,135416.67,Success
+62,Robotic shears,Automotive cable,0.35,4.2,5.00e-3,5.00e+7,1.50e-6,0.72,5.93,Success
+63,Archaeological pick,Fossilized bone,0.5,3,1.00e-1,8.00e+7,2.00e-5,0.92,0.01,Success
+64,Micro-waterjet,Microfluidic chip,0.0002,200,1.00e-5,2.00e+7,5.00e-12,0.8,3200000000.00,Success
+65,Titanium shears,Titanium mesh,0.4,4.5,1.00e-3,4.00e+8,3.00e-7,0.72,24.30,Success
+66,Composite axe,Composite material,1.2,9,5.00e-2,6.00e+7,8.00e-5,0.8,0.16,Success
+67,Cryo-ultrasonic blade,Frozen biological sample,0.015,0.3,2.00e-4,3.00e+7,5.00e-11,0.92,2070.00,Success
+68,Plasma scalpel,Tumor tissue,0.003,20000,5.00e-4,1.00e+5,1.00e-11,0.92,1104000000000000.38,Success
+69,Diamond-coated drill,Borosilicate glass,0.1,15,5.00e-3,1.00e+9,2.00e-8,0.65,73.13,Success
+70,Industrial clipper,Reinforced hose,0.6,2.8,8.00e-3,1.20e+8,1.00e-5,0.8,0.20,Success
+71,Nanofiber cutter,Carbon nanotube,0.00005,0.1,5.00e-9,5.00e+8,1.00e-16,0.8,800000000.00,Success
+72,High-frequency scalpel,Retinal tissue,0.008,0.4,8.00e-5,1.00e+6,2.00e-11,0.92,368000.00,Success
+73,Laser microdissection,Chromosome,0.0001,300000000,1.00e-7,5.00e+7,1.00e-15,0.92,8.279999999999999e+26,Success
+74,Electro-pulse cutter,Smart material,0.05,0.5,1.00e-3,1.00e+8,5.00e-9,0.8,10.00,Success
+75,Adaptive saw,Shape-memory alloy,0.75,7.5,1.50e-2,2.50e+8,3.00e-5,0.72,0.14,Success
+76,Biomimetic cutter,Chitin shell,0.18,2,1.00e-3,3.00e+7,5.00e-8,0.92,220.80,Success
+77,Resonant blade,Quartz crystal,0.1,25,2.00e-3,8.00e+8,5.00e-9,0.65,2539.06,Success
+78,Magnetic cutter,Ferrous foam,0.3,1.2,2.00e-2,1.50e+7,2.00e-6,0.72,0.26,Success
+79,Phase-change blade,Metallic glass,0.2,6,3.00e-3,4.00e+8,1.00e-7,0.72,21.60,Success
+80,Neutron-etch tool,Exotic matter,0.00002,10000000,1.00e-9,1.00e+10,1.00e-20,0.8,8.000000000000001e+27,Success
+81,Quantum knife,Superconducting material,0.00001,100000,1.00e-10,1.00e+9,1.00e-19,0.72,3.6e+24,Success
+82,Adaptive shears,Smart polymer,0.25,1.8,3.00e-3,5.00e+7,3.00e-7,0.8,7.20,Success
+83,Cryo-blade,Supercooled metal,0.1,0.6,1.00e-3,2.00e+9,5.00e-9,0.72,1.30,Success
+84,Neural-network cutter,AI-designed material,0.35,3.5,2.00e-3,3.00e+8,2.00e-7,0.8,14.29,Success
+85,Sonic scalpel,Bio-gel,0.015,0.25,5.00e-4,1.00e+6,1.50e-10,0.92,5750.00,Success
+86,Magnetic resonance slicer,Ferrogel,0.08,0.8,1.00e-3,3.00e+7,2.00e-9,0.92,392.53,Success
+87,Plasma-infused axe,Metamaterial,1.5,12,8.00e-2,6.00e+7,8.00e-5,0.8,0.22,Success
+88,Nanoscale waterjet,2D material,0.0003,500,5.00e-8,8.00e+8,1.00e-15,0.8,749999999999999.75,Success
+89,Bio-inspired cutter,Chitin composite,0.12,2.2,5.00e-4,4.00e+7,3.00e-8,0.92,445.28,Success
+90,Zero-point energy knife,Quantum foam,0.000001,10000000000,1.00e-12,1.00e+12,1.00e-25,0.8,4e+38,Success
+91,Adaptive diamond saw,Industrial diamond,0.8,7,1.00e-2,1.00e+9,5.00e-7,0.65,2.55,Success
+92,Resonant macroscope,Macro-molecular crystal,0.05,1.5,5.00e-3,5.00e+8,2.00e-9,0.8,9.00,Success
+93,Terahertz cutter,Phononic material,0.003,100000000,3.00e-5,4.00e+8,5.00e-12,0.8,200000000000000065536.00,Success
+94,Programmable matter blade,Transformable alloy,0.2,4,4.00e-3,2.50e+8,1.00e-7,0.72,11.52,Success
+95,Holographic energy knife,Photonic lattice,0.000005,300000000,2.00e-7,7.00e+8,1.00e-17,0.8,1.2857142857142858e+26,Success
+96,Neural-interface cutter,Brain tissue,0.008,0.15,1.00e-4,5.00e+5,1.00e-11,0.92,165600.00,Success
+97,Gravity-assisted blade,Dense matter,0.5,2,5.00e-2,3.00e+8,2.00e-5,0.8,0.00,Success
+98,Phase-conjugate scalpel,Nonlinear optical material,0.02,0.3,1.00e-4,1.00e+9,5.00e-11,0.8,144.00,Success
+99,4D-printed cutter,4D material,0.18,1.2,2.00e-3,1.50e+8,1.00e-7,0.8,3.46,Success
+100,Quantum entanglement blade,Entangled matter,0.000002,1000000000,1.00e-11,5.00e+10,1.00e-22,0.8,1.6000000000000001e+34,Success
