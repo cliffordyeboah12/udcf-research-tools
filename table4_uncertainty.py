@@ -1,7 +1,7 @@
 import math
 
 def calculate_uncertainty():
-    # Relative uncertainties (u_i / x_i) from Table 3
+    # Relative uncertainties (u_i / x_i) from Table 4
     u_rel_v = 0.018  # 1.8%
     u_rel_A = 0.025  # 2.5%
     u_rel_m = 0.005  # 0.5%
@@ -28,7 +28,7 @@ def calculate_uncertainty():
     # Expanded Uncertainty (U) for k=2
     U = uc * 2
 
-    print(f"--- Table 3: Uncertainty Budget Validation ---")
+    print(f"--- Table 4: Uncertainty Budget Validation ---")
     print(f"Velocity Contribution: {cont_v*100:.1f}%")
     print(f"Combined Standard Uncertainty (uc): {uc*100:.2f}%")
     print(f"Expanded Uncertainty (U, k=2): {U*100:.2f}%")
