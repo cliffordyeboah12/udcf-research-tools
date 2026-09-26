@@ -1,6 +1,6 @@
 import pandas as pd
 
-def reproduce_table_4():
+def reproduce_table_5():
     data = [
         {"Scenario": "Axe vs. Pine Wood", "m": 2.5, "v": 12.0, "d": 0.05, "A": 5.0e-5, "tau": 8.0e6, "kY": 0.40},
         {"Scenario": "Razor vs. Pine Wood", "m": 0.001, "v": 12.0, "d": 0.05, "A": 1.2e-7, "tau": 8.0e6, "kY": 0.10},
@@ -18,8 +18,8 @@ def reproduce_table_4():
         results.append({"Scenario": s['Scenario'], "Calculated_eta": round(eta, 2)})
 
     df = pd.DataFrame(results)
-    print("--- Table 4: Extrapolation Sample Check ---")
+    print("--- Table 5: Extrapolation Sample Check ---")
     print(df)
 
 if __name__ == "__main__":
-    reproduce_table_4()
+    reproduce_table_5()
