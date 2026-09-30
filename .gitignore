@@ -1,20 +1,23 @@
-# Python-specific files
+# Python bytecode (created when you run scripts)
 __pycache__/
 *.py[cod]
-*$py.class
+*$*.py
+
+# Virtual environments (if you use them locally)
+venv/
 .venv/
 env/
-venv/
-ENV/
 
-# Excel temporary files (very important for your /data folder)
-~$*.xlsx
-~$*.xls
-
-# Operating System files
+# Operating system files
 .DS_Store
 Thumbs.db
 
-# IDEs
+# Temporary Excel/Office files 
+# (These are created when you have an Excel file open)
+~$*.xlsx
+~$*.xls
+~$*.csv
+
+# IDE folders
 .vscode/
 .idea/
