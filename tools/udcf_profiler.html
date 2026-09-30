@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UDCF PROFILER v3.1| The Yeboah Institute</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px); border: 1px solid rgba(30, 41, 59, 1); }
+        .input-group { display: flex; gap: 2px; }
+        .unit-select { 
+            background-color: #1e293b; 
+            border: 1px solid #334155; 
+            color: #3b82f6; 
+            font-size: 10px; 
+            font-weight: 900; 
+            padding: 0 12px; 
+            border-radius: 0 12px 12px 0;
+            outline: none;
+            cursor: pointer;
+            min-width: 80px;
+        }
+        .preset-select {
+            background-color: #0f172a;
+            border: 1px solid #1e293b;
+            color: #94a3b8;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 8px;
+            border-radius: 12px;
+            width: 100%;
+            outline: none;
+            margin-bottom: 8px;
+        }
+        .preset-select:focus { border-color: #3b82f6; color: white; }
+        input[type="number"] { border-radius: 12px 0 0 12px !important; }
+        .no-unit-radius { border-radius: 12px !important; }
+        
+        /* Fraction Styling for the Formula */
+        .math-fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            align-items: center;
+            padding: 0 4px;
+        }
+        .math-numerator { border-bottom: 1px solid #60a5fa; padding: 0 2px; }
+        .math-denominator { padding: 0 2px; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #020617; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen pb-12">
+
+    <!-- NAVIGATION -->
+    <nav class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+                <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-500/20">
+                    <i data-lucide="microscope" class="text-white w-6 h-6"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-black uppercase tracking-tighter">UDCF PROFILER<span class="text-blue-500">v3.1</span></h1>
+                    <p class="text-[8px] text-slate-500 font-bold tracking-[0.3em] uppercase">The Yeboah Institute Research Ghana</p>
+                </div>
+            </div>
+            
+            <!-- FORMULA DISPLAY -->
+            <div class="flex bg-slate-950 border border-blue-500/30 rounded-xl px-6 py-2 items-center gap-4">
+                <div class="flex items-center gap-3">
+                    <p class="text-[8px] font-black text-slate-500 uppercase tracking-widest border-r border-slate-800 pr-4">Dimensionless Efficiency Index</p>
+                    <div class="flex items-center text-sm font-serif italic font-bold text-blue-400">
+                        <span>η = k<sub>Y</sub></span>
+                        <span class="text-lg ml-1">(</span>
+                        <div class="math-fraction text-[11px]">
+                            <span class="math-numerator">mv<sup>2</sup></span>
+                            <span class="math-denominator">2dτA</span>
+                        </div>
+                        <span class="text-lg">)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        <!-- LEFT COLUMN: INPUTS -->
+        <div class="lg:col-span-4 space-y-6">
+            <section class="glass rounded-[2rem] p-6 shadow-2xl">
+                <h2 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6 flex items-center gap-2">
+                    <i data-lucide="settings-2" class="w-4 h-4 text-blue-500"></i> Research Parameters
+                </h2>
+                
+                <div class="space-y-5">
+                    <div>
+                        <label class="text-[10px] font-black text-blue-400 uppercase mb-1 block"> Systemic Energy Recovery Factor (k<sub>Y</sub>)</label>
+                        <select id="kyPreset" onchange="applyPreset()" class="preset-select">
+                            <option value="0.95">Standard Research (0.95)</option>
+                            <option value="1.00">Theoretical Limit (1.00)</option>
+                            <option value="0.92">Atmospheric Adjusted (0.92)</option>
+                            <option value="0.88">High Friction Zone (0.88)</option>
+                            <option value="custom">-- Custom Value --</option>
+                        </select>
+                        <input type="number" id="ky" value="0.95" step="0.01" oninput="calculate()" class="w-full bg-slate-950 border border-slate-800 no-unit-radius px-4 py-3 text-sm font-mono text-white outline-none focus:border-blue-500">
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Mass (m)</label>
+                        <div class="input-group">
+                            <input type="number" id="mass" value="0.5" oninput="calculate()" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="massUnit" onchange="calculate()" class="unit-select">
+                                <option value="1">kg</option>
+                                <option value="0.001">g</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Velocity (v)</label>
+                        <div class="input-group">
+                            <input type="number" id="velocity" value="5.0" oninput="calculate()" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="velocityUnit" onchange="calculate()" class="unit-select">
+                                <option value="1">m/s</option>
+                                <option value="0.277778">km/h</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Thickness (d)</label>
+                        <div class="input-group">
+                            <input type="number" id="thickness" value="2.0" oninput="calculate()" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="thicknessUnit" onchange="calculate()" class="unit-select">
+                                <option value="0.001">mm</option>
+                                <option value="1">m</option>
+                                <option value="0.000001">μm</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Toughness (τ)</label>
+                        <div class="input-group">
+                            <input type="number" id="toughness" value="2.5" oninput="calculate()" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="toughnessUnit" onchange="calculate()" class="unit-select">
+                                <option value="1000000">MPa</option>
+                                <option value="1">Pa</option>
+                                <option value="1000000000">GPa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800">
+                        <label class="text-[10px] font-black text-blue-400 uppercase mb-1 block">Contact Area (A)</label>
+                        <div class="input-group">
+                            <input type="number" id="area" value="0.5" oninput="calculate()" class="flex-1 bg-blue-950/30 border border-blue-500/50 px-4 py-3 text-sm font-mono text-blue-300 outline-none">
+                            <select id="areaUnit" onchange="calculate()" class="unit-select !border-blue-500/50 !bg-blue-900/20">
+                                <option value="0.000001">mm²</option>
+                                <option value="1">m²</option>
+                                <option value="0.000000000001">μm²</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TOOL LIBRARY & EDGE GEOMETRY (Replaces AI Scanner) -->
+            <section class="glass rounded-[2rem] p-6 relative overflow-hidden border-t-4 border-indigo-500">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-indigo-400 flex items-center gap-2 mb-4">
+                    <i data-lucide="database" class="w-4 h-4 text-indigo-500"></i> Tool Library & Edge Geometry
+                </h3>
+                <p class="text-[10px] text-slate-400 mb-4 leading-relaxed">Select a tool from the library or manually input the edge radius (R) and contact length (L) to calculate the Contact Area (A).</p>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Tool Library</label>
+                        <select id="toolLibrary" onchange="handleToolChange()" class="preset-select">
+                            <option value="">-- Select a Tool --</option>
+                            <option value="0.1">Razor Blade (0.1 μm)</option>
+                            <option value="0.15">Scalpel (0.15 μm)</option>
+                            <option value="0.65">Kitchen Knife (0.65 μm)</option>
+                            <option value="12.5">Wood Chisel (12.5 μm)</option>
+                            <option value="40">Cutlass / Machete (40 μm)</option>
+                            <option value="65">Axe (Sharp) (65 μm)</option>
+                            <option value="150">Industrial Shear (150 μm)</option>
+                            <option value="250">Axe (Blunt) (250 μm)</option>
+                            <option value="custom">Custom Input</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Edge Radius (R)</label>
+                        <div class="input-group">
+                            <input type="number" id="edgeRadius" placeholder="e.g. 0.1" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="edgeRadiusUnit" class="unit-select">
+                                <option value="0.000001">μm</option>
+                                <option value="0.001">mm</option>
+                                <option value="1">m</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-[10px] font-black text-slate-500 uppercase mb-1 block">Contact Length (L)</label>
+                        <div class="input-group">
+                            <input type="number" id="contactLength" placeholder="e.g. 5" class="flex-1 bg-slate-950 border border-slate-800 px-4 py-3 text-sm font-mono text-white outline-none">
+                            <select id="contactLengthUnit" class="unit-select">
+                                <option value="0.001">mm</option>
+                                <option value="0.000001">μm</option>
+                                <option value="1">m</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="calculateAreaFromGeometry()" class="w-full py-4 bg-indigo-600 hover:bg-indigo-500 rounded-xl font-black text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 mt-2">
+                        <i data-lucide="calculator" class="w-4 h-4"></i> Calculate Area
+                    </button>
+                </div>
+            </section>
+        </div>
+
+        <!-- RIGHT COLUMN: RESULTS -->
+        <div class="lg:col-span-8 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Main η Display -->
+                <div id="statusCard" class="md:col-span-2 rounded-[2.5rem] p-8 flex flex-col items-center justify-center border-2 transition-all duration-500 bg-slate-900 border-slate-800">
+                    <span class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-500 mb-2">Dimensionless Ratio (η)</span>
+                    <div id="etaDisplay" class="text-7xl font-black tracking-tighter mb-6 text-white">0.000</div>
+                    <div id="badge" class="flex items-center gap-3 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-800 text-slate-400">
+                        <i data-lucide="refresh-cw" class="w-4 h-4 animate-spin"></i> Initializing...
+                    </div>
+                </div>
+
+                <!-- Energy Breakdown -->
+                <div class="flex flex-col gap-4">
+                    <div class="glass rounded-3xl p-5 border-l-4 border-blue-500">
+                        <p class="text-[9px] font-black text-slate-500 uppercase mb-1">Kinetic Energy (Eₖ)</p>
+                        <p id="keDisplay" class="text-lg mono font-black text-blue-400">0.00 J</p>
+                    </div>
+                    <div class="glass rounded-3xl p-5 border-l-4 border-amber-500">
+                        <p class="text-[9px] font-black text-slate-500 uppercase mb-1">Separation Work (Wₛ)</p>
+                        <p id="resDisplay" class="text-lg mono font-black text-amber-400">0.00 J</p>
+                    </div>
+                    <div class="bg-blue-600 rounded-3xl p-5 shadow-lg shadow-blue-600/20">
+                        <p class="text-[9px] font-black text-white/70 uppercase mb-1">Critical Velocity</p>
+                        <p id="reqVDisplay" class="text-lg mono font-black text-white">0.00 m/s</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RESEARCH GRAPH -->
+            <div class="glass rounded-[2rem] p-8 border border-slate-800">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-6 flex items-center gap-2">
+                    <i data-lucide="line-chart" class="w-4 h-4 text-blue-500"></i> Resistance (J) vs Effective Energy (J)
+                </h3>
+                <div class="w-full h-64 bg-slate-950/50 rounded-2xl p-4">
+                    <canvas id="researchChart"></canvas>
+                </div>
+            </div>
+
+            <!-- SI VECTOR ANALYSIS -->
+            <div class="glass rounded-[2rem] p-8 border-t-4 border-blue-500">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-blue-400 mb-6 flex items-center gap-2">
+                    <i data-lucide="layers" class="w-4 h-4"></i> SI Vector Analysis (Normalized Values)
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-y-6 gap-x-4">
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Kinetic Mass (kg)</p>
+                        <p id="si-mass" class="text-sm mono text-white">0.000</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Velocity Vector (m/s)</p>
+                        <p id="si-velocity" class="text-sm mono text-white">0.000</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Systemic Energy Recovery Factor (kY)</p>
+                        <p id="si-ky" class="text-sm mono text-white">0.000</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Thickness (m)</p>
+                        <p id="si-thickness" class="text-sm mono text-white">0.000</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Toughness (Pa)</p>
+                        <p id="si-toughness" class="text-sm mono text-white">0.000</p>
+                    </div>
+                    <div class="border-l border-slate-800 pl-4">
+                        <p class="text-[8px] font-black text-slate-500 uppercase">Contact Area (m²)</p>
+                        <p id="si-area" class="text-sm mono text-white">0.000</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Optimization Strategy -->
+            <div class="glass rounded-[2.5rem] p-8">
+                <h3 class="text-[10px] font-black uppercase tracking-widest text-emerald-400 mb-6">Optimization Strategy</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-6 rounded-3xl bg-slate-950 border border-slate-800">
+                        <p class="text-[10px] font-black text-blue-500 uppercase mb-2">Kinematic Vector</p>
+                        <p id="kinematicText" class="text-sm text-slate-400 leading-relaxed italic">Awaiting calculation...</p>
+                    </div>
+                    <div class="p-6 rounded-3xl bg-slate-950 border border-blue-500/20">
+                        <p class="text-[10px] font-black text-emerald-400 uppercase mb-2">Geometric Vector</p>
+                        <p id="geometricText" class="text-sm text-slate-400 leading-relaxed italic">Awaiting calculation...</p>
+                    </div>
+                </div>
+                <button onclick="downloadReport()" class="w-full mt-8 py-4 bg-slate-800 hover:bg-blue-600 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4"></i> Export Research Data (.txt)
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="text-center py-12 opacity-50">
+        <p class="text-[11px] font-black uppercase tracking-[0.5em] text-slate-400">
+            CLIFFORD YEBOAH • THE YEBOAH INSTITUTE RESEARCH GHANA • 2026
+        </p>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        // Initialize Chart
+        const ctx = document.getElementById('researchChart').getContext('2d');
+        let researchChart = new Chart(ctx, {
+            type: 'scatter',
+            data: {
+                datasets: [{
+                    label: 'Current System State',
+                    data: [{ x: 0, y: 0 }],
+                    backgroundColor: '#10b981',
+                    pointRadius: 8,
+                    pointHoverRadius: 10,
+                    showLine: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        title: { display: true, text: 'Effective Energy (J)', color: '#94a3b8', font: { size: 10, weight: 'bold' } },
+                        grid: { color: 'rgba(30, 41, 59, 0.5)', borderDash: [5, 5] },
+                        ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 9 }, callback: (v) => v.toExponential(1) }
+                    },
+                    y: {
+                        title: { display: true, text: 'Resistance (J)', color: '#94a3b8', font: { size: 10, weight: 'bold' } },
+                        grid: { color: 'rgba(30, 41, 59, 0.5)', borderDash: [5, 5] },
+                        ticks: { color: '#64748b', font: { family: 'JetBrains Mono', size: 9 }, callback: (v) => v.toExponential(1) }
+                    }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
+
+        function applyPreset() {
+            const preset = document.getElementById('kyPreset').value;
+            if (preset !== "custom") {
+                document.getElementById('ky').value = preset;
+            }
+            calculate();
+        }
+
+        // --- NEW EDGE GEOMETRY FUNCTIONS ---
+        function handleToolChange() {
+            const toolSelect = document.getElementById('toolLibrary');
+            const radiusInput = document.getElementById('edgeRadius');
+            const radiusUnit = document.getElementById('edgeRadiusUnit');
+
+            if (toolSelect.value && toolSelect.value !== 'custom') {
+                radiusInput.value = toolSelect.value;
+                radiusUnit.value = "0.000001"; // Set to μm
+            } else {
+                radiusInput.value = '';
+            }
+        }
+
+        function calculateAreaFromGeometry() {
+            const rVal = parseFloat(document.getElementById('edgeRadius').value);
+            const rUnit = parseFloat(document.getElementById('edgeRadiusUnit').value);
+            const lVal = parseFloat(document.getElementById('contactLength').value);
+            const lUnit = parseFloat(document.getElementById('contactLengthUnit').value);
+
+            if (isNaN(rVal) || isNaN(lVal)) {
+                alert("Please enter valid numbers for Edge Radius (R) and Contact Length (L).");
+                return;
+            }
+
+            // Calculate Area in m^2 (SI Unit)
+            const r_SI = rVal * rUnit;
+            const l_SI = lVal * lUnit;
+            const area_SI = r_SI * l_SI;
+
+            // Convert back to the currently selected Area Unit in the main parameters
+            const mainAreaUnit = parseFloat(document.getElementById('areaUnit').value);
+            const finalArea = area_SI / mainAreaUnit;
+
+            // Update main area input and trigger calculation
+            document.getElementById('area').value = finalArea.toExponential(4);
+            calculate();
+        }
+        // -----------------------------------
+
+        function calculate() {
+            const ky = parseFloat(document.getElementById('ky').value) || 0;
+            const m_SI = (parseFloat(document.getElementById('mass').value) || 0) * parseFloat(document.getElementById('massUnit').value);
+            const vFactor = parseFloat(document.getElementById('velocityUnit').value);
+            const v_SI = (parseFloat(document.getElementById('velocity').value) || 0) * vFactor;
+            const d_SI = (parseFloat(document.getElementById('thickness').value) || 0) * parseFloat(document.getElementById('thicknessUnit').value);
+            const tau_SI = (parseFloat(document.getElementById('toughness').value) || 0) * parseFloat(document.getElementById('toughnessUnit').value);
+            const aFactor = parseFloat(document.getElementById('areaUnit').value);
+            const A_SI = (parseFloat(document.getElementById('area').value) || 0) * aFactor;
+
+            const kineticEnergy = 0.5 * m_SI * Math.pow(v_SI, 2);
+            const effectiveEnergy = ky * kineticEnergy; 
+            const separationWork = d_SI * tau_SI * A_SI;
+
+            const eta = separationWork > 0 ? (effectiveEnergy / separationWork) : 0;
+            const success = eta >= 1;
+
+            const reqV_SI = (ky > 0 && m_SI > 0 && separationWork > 0) ? Math.sqrt((2 * separationWork) / (m_SI * ky)) : 0;
+            const reqV_UI = reqV_SI / vFactor;
+            const reqA_SI = (d_SI > 0 && tau_SI > 0) ? (ky * 0.5 * m_SI * Math.pow(v_SI, 2)) / (d_SI * tau_SI) : 0;
+            const reqA_UI = reqA_SI / aFactor;
+
+            // Update Chart
+            researchChart.data.datasets[0].data = [{ x: effectiveEnergy, y: separationWork }];
+            researchChart.data.datasets[0].backgroundColor = success ? '#10b981' : '#f43f5e';
+            const maxVal = Math.max(effectiveEnergy, separationWork) * 1.5;
+            researchChart.options.scales.x.max = maxVal || 1;
+            researchChart.options.scales.y.max = maxVal || 1;
+            researchChart.update('none');
+
+            // UI Updates
+            document.getElementById('etaDisplay').innerText = eta.toFixed(4);
+            document.getElementById('keDisplay').innerText = kineticEnergy.toExponential(4) + " J";
+            document.getElementById('resDisplay').innerText = separationWork.toExponential(4) + " J";
+            
+            const vUnitLabel = document.getElementById('velocityUnit').options[document.getElementById('velocityUnit').selectedIndex].text;
+            document.getElementById('reqVDisplay').innerText = reqV_UI.toFixed(2) + " " + vUnitLabel;
+
+            document.getElementById('si-mass').innerText = m_SI.toExponential(4);
+            document.getElementById('si-velocity').innerText = v_SI.toFixed(4);
+            document.getElementById('si-ky').innerText = ky.toFixed(4);
+            document.getElementById('si-thickness').innerText = d_SI.toExponential(4);
+            document.getElementById('si-toughness').innerText = tau_SI.toExponential(4);
+            document.getElementById('si-area').innerText = A_SI.toExponential(4);
+
+            const statusCard = document.getElementById('statusCard');
+            const badge = document.getElementById('badge');
+            const etaDisplay = document.getElementById('etaDisplay');
+            const aUnitLabel = document.getElementById('areaUnit').options[document.getElementById('areaUnit').selectedIndex].text;
+
+            if (success) {
+                statusCard.className = "md:col-span-2 rounded-[2.5rem] p-8 flex flex-col items-center justify-center border-2 transition-all duration-500 bg-emerald-500/5 border-emerald-500/20";
+                badge.className = "flex items-center gap-3 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest bg-emerald-500 text-white";
+                badge.innerHTML = '<i data-lucide="check-circle-2" class="w-4 h-4"></i> Separation Achieved';
+                etaDisplay.className = "text-7xl font-black tracking-tighter mb-6 text-emerald-400 drop-shadow-[0_0_20px_rgba(52,211,153,0.3)]";
+                document.getElementById('kinematicText').innerText = "Kinematic energy is sufficient. You can reduce velocity to " + reqV_UI.toFixed(2) + " " + vUnitLabel + " to maintain the threshold.";
+                document.getElementById('geometricText').innerText = "Geometric resistance is overcome. Maximum allowable contact area for this energy state is " + reqA_UI.toFixed(4) + " " + aUnitLabel + ".";
+            } else {
+                statusCard.className = "md:col-span-2 rounded-[2.5rem] p-8 flex flex-col items-center justify-center border-2 transition-all duration-500 bg-rose-500/5 border-rose-500/20";
+                badge.className = "flex items-center gap-3 px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-widest bg-rose-500 text-white";
+                badge.innerHTML = '<i data-lucide="alert-triangle" class="w-4 h-4"></i> Energy Deficit';
+                etaDisplay.className = "text-7xl font-black tracking-tighter mb-6 text-rose-400";
+                document.getElementById('kinematicText').innerText = "Critical energy deficit. Increase velocity to " + reqV_UI.toFixed(2) + " " + vUnitLabel + " to achieve the η=1 separation threshold.";
+                document.getElementById('geometricText').innerText = "Resistance is too high. Reduce contact area (A) to below " + reqA_UI.toFixed(4) + " " + aUnitLabel + " to enable separation.";
+            }
+            lucide.createIcons();
+        }
+
+        function downloadReport() {
+            const eta = document.getElementById('etaDisplay').innerText;
+            const report = `udcf-profiler REPORT v3.1\n` +
+                `Timestamp: ${new Date().toLocaleString()}\n` +
+                `---------------------------------------\n` +
+                `Yeboah Constant (kY): ${document.getElementById('ky').value}\n` +
+                `Effective Energy (E_eff): ${document.getElementById('keDisplay').innerText}\n` +
+                `Resistance (W_s): ${document.getElementById('resDisplay').innerText}\n` +
+                `Dimensionless Index (η): ${eta}\n` +
+                `---------------------------------------\n` +
+                `SI VECTOR ANALYSIS:\n` +
+                `Mass: ${document.getElementById('si-mass').innerText} kg\n` +
+                `Velocity: ${document.getElementById('si-velocity').innerText} m/s\n` +
+                `Thickness: ${document.getElementById('si-thickness').innerText} m\n` +
+                `Toughness: ${document.getElementById('si-toughness').innerText} Pa\n` +
+                `Area: ${document.getElementById('si-area').innerText} m2\n` +
+                `---------------------------------------\n` +
+                `The Yeboah Institute Research Ghana`;
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `Yeboah_Research_Report_${Date.now()}.txt`;
+            link.click();
+        }
+
+        calculate();
+    </script>
+</body>
+</html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPCR v3.1 | Digital Twin</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        window.MathJax = {
+            options: { enablePersistence: false },
+            tex: {
+                inlineMath: [['\\(', '\\)']],
+                displayMath: [['$$', '$$']]
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* DYNAMIC PIVOT SYSTEM */
+        #pendulum-group {
+            transform-origin: 200px 80px; 
+        }
+
+        .severed-flyaway {
+            animation: flyaway 0.8s forwards ease-out;
+        }
+
+        @keyframes flyaway {
+            0% { transform: translate(0, 0) rotate(0deg); opacity: 1; }
+            100% { transform: translate(180px, 60px) rotate(140deg); opacity: 0; }
+        }
+
+        input[type=range] { -webkit-appearance: none; background: #e2e8f0; height: 6px; border-radius: 999px; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%;
+            background: #2563eb; cursor: pointer; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.25rem center;
+            background-size: 0.8em;
+            padding-right: 1.25rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="min-h-screen p-4 md:p-8">
+        <!-- Header -->
+        <header class="max-w-6xl mx-auto mb-8 border-b border-slate-200 pb-6 flex flex-col md:flex-row justify-between items-end">
+            <div>
+                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">
+                    IPCR v3.1 <span class="text-blue-600 font-light">Digital Twin</span>
+                </h1>
+                <p class="text-slate-500 italic text-sm mt-1">Instrumented Pendulum Cutting Rig | UDCF Framework</p>
+            </div>
+            <div class="text-right hidden md:block">
+                <div class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-1">Research Lead</div>
+                <div class="text-sm font-bold text-slate-700">Clifford Yeboah</div>
+            </div>
+        </header>
+
+        <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Left Column: Controls -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Rig Setup</h3>
+                    <div class="space-y-6">
+                        <!-- Tool Mass with Unit Dropdown - Updated to 10.0 kg -->
+                        <div>
+                            <div class="flex justify-between mb-2 text-sm font-semibold">
+                                <label>Tool Mass (\(m\))</label>
+                            </div>
+                            <div class="flex gap-2">
+                                <input type="number" id="input-mass" value="10.0" step="0.001" class="flex-1 p-2 border rounded font-mono text-blue-600">
+                                <select id="unit-mass" class="bg-slate-100 border rounded px-3 font-bold text-xs outline-none">
+                                    <option value="kg">kg</option>
+                                    <option value="g">g</option>
+                                    <option value="mg">mg</option>
+                                </select>
+                            </div>
+                            <p class="text-[9px] text-slate-400 mt-1 italic">Standardised nominal mass: 10.0 kg</p>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-2 text-sm font-semibold">
+                                <label>Release Angle (\(\theta\))</label>
+                                <span id="val-angle" class="text-blue-600 font-mono">60°</span>
+                            </div>
+                            <input type="range" id="input-angle" min="0" max="90" step="1" value="60" class="w-full cursor-pointer">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-6">Specimen & Recovery Properties</h3>
+                    <div class="space-y-4 text-sm">
+                        <div class="flex justify-between items-center">
+                            <label class="text-slate-600 font-bold text-blue-700">Recovery Factor (k<sub>Y</sub>)</label>
+                            <input type="number" id="input-ky" value="0.95" step="0.01" class="w-24 p-1 border rounded text-right font-mono bg-blue-50">
+                        </div>
+                        
+                        <div class="flex justify-between items-center">
+                            <label class="text-slate-600">Thickness (\(d\))</label>
+                            <div class="flex gap-1">
+                                <input type="number" id="input-thickness" value="2.0" class="w-20 p-1 border rounded text-right font-mono">
+                                <select id="unit-thickness" class="text-[10px] bg-slate-100 border rounded px-1 font-bold outline-none">
+                                    <option value="mm">mm</option>
+                                    <option value="um">μm</option>
+                                    <option value="m">m</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <label class="text-slate-600">Ult. Shear Strength (\(\tau_{ult}\))</label>
+                            <div class="flex gap-1">
+                                <input type="number" id="input-shear" value="5.0" class="w-20 p-1 border rounded text-right font-mono">
+                                <select id="unit-shear" class="text-[10px] bg-slate-100 border rounded px-1 font-bold outline-none">
+                                    <option value="MPa">MPa</option>
+                                    <option value="Pa">Pa</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center">
+                            <label class="text-slate-600">Contact Area (\(A\))</label>
+                            <div class="flex gap-1">
+                                <input type="number" id="input-area" value="10.0" class="w-20 p-1 border rounded text-right font-mono">
+                                <select id="unit-area" class="text-[10px] bg-slate-100 border rounded px-1 font-bold outline-none">
+                                    <option value="mm2">mm²</option>
+                                    <option value="um2">μm²</option>
+                                    <option value="m2">m²</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between px-2">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Safety Interlock</span>
+                        <input type="checkbox" id="safety-lock" class="w-4 h-4 accent-blue-600">
+                    </div>
+                    <button id="btn-release" class="w-full py-4 rounded-xl font-bold bg-slate-400 text-white shadow-lg transition-all cursor-not-allowed" disabled>
+                        LOCKED
+                    </button>
+                    <button id="btn-export" class="w-full py-3 rounded-xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-50 transition-all flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        EXPORT RESEARCH DATA
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right Column: Visuals & Results -->
+            <div class="lg:col-span-8 space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- SVG Visualiser -->
+                    <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col items-center justify-center min-h-[450px] relative overflow-hidden">
+                        <svg viewBox="0 0 400 400" class="w-full h-full">
+                            <rect x="196" y="0" width="8" height="80" fill="#e2e8f0" />
+                            <circle cx="200" cy="80" r="10" fill="#1e293b" />
+                            <rect x="160" y="340" width="80" height="20" fill="#475569" />
+                            <rect x="175" y="290" width="50" height="50" fill="#cbd5e1" rx="1" />
+                            <rect id="specimen" x="190" y="275" width="20" height="15" fill="#10b981" rx="1" />
+                            <g id="pendulum-group">
+                                <line x1="200" y1="80" x2="200" y2="300" stroke="#1e293b" stroke-width="6" stroke-linecap="round" />
+                                <path d="M180 280 L220 280 L200 320 Z" fill="#2563eb" />
+                                <text x="215" y="190" font-size="12" class="fill-slate-400 font-bold italic">L = 1.2m</text>
+                            </g>
+                        </svg>
+                        <div class="absolute bottom-4 left-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            Rigid Anvil & Specimen Clamp Active
+                        </div>
+                    </div>
+
+                    <!-- Results Card -->
+                    <div id="results-card" class="p-8 rounded-2xl shadow-xl flex flex-col justify-between bg-slate-900 text-white transition-colors duration-500 overflow-hidden">
+                        <div class="w-full">
+                            <div class="flex justify-between items-start mb-6">
+                                <span class="text-[10px] font-bold uppercase tracking-widest opacity-60">Predictive Separation Index</span>
+                                <span id="status-badge" class="text-[9px] font-bold px-2 py-1 rounded border border-slate-600 text-slate-500 uppercase">Ready</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-3xl font-mono font-bold text-white/50">η =</span>
+                                <div id="res-eta" class="text-5xl font-mono font-bold tracking-tighter text-blue-400 break-all leading-tight">0.000</div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4 mt-6 pt-6 border-t border-white/10">
+                            <div class="flex justify-between items-center">
+                                <div class="flex flex-col">
+                                    <span class="text-[9px] opacity-50 uppercase font-bold tracking-wider">Impact Velocity</span>
+                                    <span id="vel-alert" class="text-[8px] font-bold text-red-400 hidden">BELOW CRITICAL</span>
+                                </div>
+                                <span class="text-xl font-mono font-bold"><span id="res-vel">0.00</span> <span class="text-xs opacity-60">m/s</span></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[9px] opacity-50 uppercase font-bold tracking-wider">Critical Velocity (\(v_c\))</span>
+                                <span class="text-xl font-mono font-bold text-amber-400"><span id="res-vc">0.00</span> <span class="text-xs opacity-60">m/s</span></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-[9px] opacity-50 uppercase font-bold tracking-wider">Kinetic Energy (E<sub>k</sub>)</span>
+                                <span class="text-xl font-mono font-bold"><span id="res-energy">0.00</span> <span class="text-xs opacity-60">J</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equations -->
+                <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm">
+                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-8 text-center">Governing Mathematical Framework</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="space-y-4">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest text-center">Impact Velocity</p>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center text-lg overflow-x-auto flex items-center justify-center min-h-[100px]">
+                                \( v = \sqrt{\frac{2[mgL(1-\cos\theta) - 0.45]}{m}} \)
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest text-center">Critical Velocity</p>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center text-lg overflow-x-auto flex items-center justify-center min-h-[100px]">
+                                \( v_c = \sqrt{\frac{2 \cdot d \cdot \tau_{ult} \cdot A}{m k_Y}} \)
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold tracking-widest text-center">Separation Index (\(\eta\))</p>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 text-center text-lg overflow-x-auto flex items-center justify-center min-h-[100px]">
+                                \( \eta = k_Y \left( \frac{mv^2}{2 \cdot d \cdot \tau_{ult} \cdot A} \right) \)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="max-w-6xl mx-auto mt-12 text-center text-slate-400 text-[11px] pb-12 border-t border-slate-200 pt-8">
+            <p>© 2026 Yeboah Research Lab • Instrumented Pendulum Cutting Rig • UDCF v3.1</p>
+        </footer>
+    </div>
+
+    <script>
+        // --- Elements ---
+        const pendulum = document.getElementById('pendulum-group');
+        const specimen = document.getElementById('specimen');
+        const btnRelease = document.getElementById('btn-release');
+        const btnExport = document.getElementById('btn-export');
+        const safetyLock = document.getElementById('safety-lock');
+        const card = document.getElementById('results-card');
+        const statusBadge = document.getElementById('status-badge');
+        const velAlert = document.getElementById('vel-alert');
+
+        const inMass = document.getElementById('input-mass');
+        const unitMass = document.getElementById('unit-mass');
+        const inAngle = document.getElementById('input-angle');
+        const inKy = document.getElementById('input-ky');
+        const inThick = document.getElementById('input-thickness');
+        const unitThick = document.getElementById('unit-thickness');
+        const inShear = document.getElementById('input-shear');
+        const unitShear = document.getElementById('unit-shear');
+        const inArea = document.getElementById('input-area');
+        const unitArea = document.getElementById('unit-area');
+
+        const valAngle = document.getElementById('val-angle');
+        const resEta = document.getElementById('res-eta');
+        const resVel = document.getElementById('res-vel');
+        const resVc = document.getElementById('res-vc');
+        const resEnergy = document.getElementById('res-energy');
+
+        let isAnimating = false;
+
+        function calculatePhysics() {
+            // Mass Conversion
+            let m = parseFloat(inMass.value) || 0;
+            if (unitMass.value === 'g') m *= 1e-3;
+            else if (unitMass.value === 'mg') m *= 1e-6;
+
+            const theta = parseFloat(inAngle.value);
+            const ky = parseFloat(inKy.value);
+            
+            // Other Unit Conversions
+            let d = parseFloat(inThick.value);
+            if (unitThick.value === 'um') d *= 1e-6; 
+            else if (unitThick.value === 'mm') d *= 1e-3;
+
+            let tau = parseFloat(inShear.value);
+            if (unitShear.value === 'MPa') tau *= 1e6;
+
+            let A = parseFloat(inArea.value);
+            if (unitArea.value === 'mm2') A *= 1e-6;
+            else if (unitArea.value === 'um2') A *= 1e-12;
+
+            const L = 1.2;
+            const g = 9.80665;
+            const loss = 0.45; // Energy loss in Joules (modelled friction/drag)
+
+            const rad = (theta * Math.PI) / 180;
+            const netE = Math.max(0, (m * g * L * (1 - Math.cos(rad))) - loss);
+            const v = m > 0 ? Math.sqrt((2 * netE) / m) : 0;
+            
+            const workRequired = d * tau * A; 
+            
+            // Index Formula: kY * (mv^2 / 2dτA)
+            const eta = workRequired > 0 ? ky * ( (m * v * v) / (2 * d * tau * A) ) : 0;
+
+            // Critical velocity using exactly mkY in the denominator logically
+            const vc = (workRequired > 0 && m > 0 && ky > 0) ? Math.sqrt((2 * workRequired) / (m * ky)) : 0;
+
+            const remainE = eta >= 1 ? Math.max(0, netE - workRequired) : 0;
+            const h2 = remainE / (m * g);
+            const cosT2 = 1 - (h2 / L);
+            const followAngle = -Math.acos(Math.min(1, Math.max(-1, cosT2))) * (180 / Math.PI);
+
+            return { 
+                eta, v, vc, netE, followAngle, isSevered: eta >= 1, 
+                si: { m, v, d, tau, A, Ws: workRequired, ky } 
+            };
+        }
+
+        function updateUI() {
+            const data = calculatePhysics();
+            valAngle.innerText = `${inAngle.value}°`;
+            
+            if (data.eta > 1000000) resEta.innerText = data.eta.toExponential(3);
+            else resEta.innerText = data.eta.toLocaleString(undefined, {minimumFractionDigits: 3, maximumFractionDigits: 3});
+            
+            resVel.innerText = data.v.toFixed(2);
+            resVc.innerText = data.vc.toFixed(2);
+            resEnergy.innerText = data.netE.toFixed(2);
+
+            if (data.v < data.vc) velAlert.classList.remove('hidden');
+            else velAlert.classList.add('hidden');
+
+            if (!isAnimating) {
+                pendulum.style.transition = "none";
+                pendulum.style.transform = `rotate(${inAngle.value}deg)`;
+            }
+        }
+
+        function downloadReport() {
+            const data = calculatePhysics();
+            const now = new Date();
+            const timestamp = now.toLocaleString('en-GB');
+            
+            const report = `UDCF-IPCR RESEARCH REPORT v3.1
+Timestamp: ${timestamp}
+---------------------------------------
+Recovery Factor (kY): ${data.si.ky.toFixed(2)}
+Effective Energy (E_eff): ${data.netE.toExponential(4)} J
+Resistance Work (W_s): ${data.si.Ws.toExponential(4)} J
+Predictive Separation Index (η): ${data.eta.toFixed(4)}
+---------------------------------------
+SI VECTOR ANALYSIS:
+Mass: ${data.si.m.toExponential(4)} kg
+Impact Velocity: ${data.si.v.toFixed(4)} m/s
+Material Thickness: ${data.si.d.toExponential(4)} m
+Shear Strength: ${data.si.tau.toExponential(4)} Pa
+Contact Area: ${data.si.A.toExponential(4)} m2
+---------------------------------------
+The Yeboah Institute Research Ghana`;
+
+            const blob = new Blob([report], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `IPCR_Report_v3_1_${now.getTime()}.txt`;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        }
+
+        async function handleRelease() {
+            if (isAnimating || !safetyLock.checked) return;
+            isAnimating = true;
+            btnRelease.disabled = true;
+            btnRelease.innerText = "TESTING...";
+            
+            const data = calculatePhysics();
+            
+            // FLUID MOTION SWING
+            const swingDuration = 1.2; 
+            pendulum.style.transition = `transform ${swingDuration}s cubic-bezier(0.4, 0, 0.2, 1)`;
+            
+            const targetAngle = data.isSevered ? data.followAngle : 10;
+            pendulum.style.transform = `rotate(${targetAngle}deg)`;
+
+            // Trigger specimen flyaway exactly when passing 0 degrees
+            setTimeout(() => {
+                if (data.isSevered) {
+                    specimen.classList.add('severed-flyaway');
+                    specimen.setAttribute('fill', '#ef4444');
+                    card.classList.replace('bg-slate-900', 'bg-emerald-900');
+                    statusBadge.innerText = "Success";
+                    statusBadge.className = "text-[9px] font-bold px-2 py-1 rounded border border-emerald-400 text-emerald-400 uppercase";
+                } else {
+                    statusBadge.innerText = "Insufficient Energy";
+                    statusBadge.className = "text-[9px] font-bold px-2 py-1 rounded border border-red-400 text-red-400 uppercase";
+                }
+            }, (swingDuration * 1000) / 2);
+
+            // Reset after full swing
+            setTimeout(() => {
+                isAnimating = false;
+                btnRelease.disabled = false;
+                btnRelease.innerText = "RELEASE PENDULUM";
+                specimen.classList.remove('severed-flyaway');
+                specimen.setAttribute('fill', '#10b981');
+                card.classList.replace('bg-emerald-900', 'bg-slate-900');
+                statusBadge.innerText = "Ready";
+                statusBadge.className = "text-[9px] font-bold px-2 py-1 rounded border border-slate-600 text-slate-500 uppercase";
+                updateUI();
+            }, swingDuration * 1000 + 500);
+        }
+
+        safetyLock.addEventListener('change', () => {
+            if (safetyLock.checked) {
+                btnRelease.disabled = false;
+                btnRelease.innerText = "RELEASE PENDULUM";
+                btnRelease.className = "w-full py-4 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-lg transition-all active:scale-95";
+            } else {
+                btnRelease.disabled = true;
+                btnRelease.innerText = "LOCKED";
+                btnRelease.className = "w-full py-4 rounded-xl font-bold bg-slate-400 text-white shadow-lg transition-all cursor-not-allowed";
+            }
+        });
+
+        [inMass, unitMass, inAngle, inKy, inThick, inShear, inArea, unitThick, unitShear, unitArea].forEach(el => 
+            el.addEventListener('input', updateUI)
+        );
+        
+        btnRelease.addEventListener('click', handleRelease);
+        btnExport.addEventListener('click', downloadReport);
+
+        updateUI();
+    </script>
+</body>
+</html>
