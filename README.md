@@ -46,6 +46,107 @@ Standalone HTML/JavaScript tools for real-time calculation:
 - `udcf_profiler.html`: The primary interface for calculating the Separation Index.
 - `udcf_ipcr.html`: Digital twin for the Instrumented Pendulum Cutting Rig.
 
+  ## Figures and Experimental Results
+
+<!-- Figure 1 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_1.png" alt="Axe-Razor Paradox" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 1 | The Axe-Razor Paradox: Visualising Scale-Dependent Energy Density Discrepancies.</b> (a) Macro-scale severance where mass-dominant kinetic energy overcomes the material's fracture toughness. (b) The micro-scale failure of a high-sharpness/low-mass implement; available kinetic energy (\(E_k\)) is insufficient to sustain the fracture front. (c) The UDCF addresses these discrepancies by defining an operational unit threshold at \(\eta \geq 1\).</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 2 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_2A.png" alt="IPCR" style="max-width: 1063px;" width="100%">
+  <img src="manuscript%20figures/Figure_2B.png" alt="Digital Twin" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 2 | Empirical Validation and Digital Twin Configuration.</b> (2A) Schematic of the Instrumented Pendulum Cutting Rig (IPCR). (2B) UDCF IPCR v3.1 (Digital Twin) simulator for real-time modelling. Available at: <a href="https://doi.org/10.5281/zenodo.2226243">https://doi.org/10.5281/zenodo.2226243</a>.</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 3 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_3.png" alt="Contact Area Schematic" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 3 | Schematic representation of the instantaneous contact area (A).</b> The area is defined by the tool edge radius (\(r_e\)) and effective contact length (\(L_e\)). Examples shown for: (a) Surgical scalpel, (b) Wood-cutting tool, and (c) Industrial insert.</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 4 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_4.png" alt="UDCF Profiler GUI" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 4 | Graphical User Interface (GUI) of the UDCF Profiler v3.1.</b> This interactive suite facilitates advanced impact data processing and real-time visualisation. Software archived at: <a href="https://doi.org/10.5281/zenodo.21346812">https://doi.org/10.5281/zenodo.21346812</a>.</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 5 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_5.png" alt="Statistical Distribution" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 5 | Statistical Distribution and Variance of the Dimensionless Separation Index (\(\eta\)).</b> The bar chart visualises mean values across material categories. The critical threshold is marked at \(\eta=1.0\). (Source data: Figure_05_Source_Data.xlsx)</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 6 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_6.png" alt="Stochastic Phase Transition" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 6 | Stochastic Phase Transition and Efficiency Threshold.</b> Monte Carlo simulation results (n=500). Red points indicate sub-critical deformation; green points indicate successful cleavage. (Source data: Figure_06_Source_Data.xlsx)</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 7 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_7.png" alt="Experimental Scenarios" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 7 | Dimensionless Separation Index (\(\eta\)) Distribution Across Experimental Scenarios.</b> Blue bars indicate successful severance (\(\eta>1\)), while red bars indicate failure (\(\eta<1\)). (Source data: Figure_07_Source_Data.xlsx)</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 8 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_8.png" alt="Latency Benchmark" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 8 | Computational Latency and Modelling Fidelity Benchmark.</b> Comparison between high-fidelity FEA (Abaqus) and the UDCF analytical profiler. (Visualisation generated via DALL·E 3 and refined by the author).</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 9 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_9.png" alt="Robotic Decommissioning" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 9 | Conceptual Illustration of Autonomous Robotic Decommissioning.</b> Simulated control sequence demonstrating UDCF-enabled response to material transitions. (Visualisation generated via DALL·E 3 and refined by the author).</i>
+  </p>
+</div>
+
+---
+
+<!-- Figure 10 -->
+<div align="center">
+  <img src="manuscript%20figures/Figure_10.png" alt="Efficiency Mapping" style="max-width: 1063px;" width="100%">
+  <p>
+    <i><b>Figure 10 | Theoretical Efficiency Mapping and Velocity-Dependent Threshold.</b> The curve illustrates the quadratic relationship between impact velocity (\(v\)) and the separation index (\(\eta\)). (Source data: Figure_10_Source_Data.xlsx)</i>
+  </p>
+</div>
+
 ## 🚀 Getting Started
 
 ### Prerequisites
