@@ -11,7 +11,17 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22112130.svg)](https://doi.org/10.5281/zenodo.22112130)
 
-This repository contains the official source code, statistical benchmark scripts, and raw experimental datasets for the **Unified Dimensionless Cutting Framework (UDCF)**. These tools support the **UDCF Profiler v3.1** , **Instrumented Pendulum Cutting Rig (IPCR) v3.1** and the **UDCF Digital Twin v4.0 PRO**.
+## 🛠️ Interactive Research Tools
+
+This repository includes a suite of interactive tools designed for real-time analysis and digital twin synchronization. You can find these in the [`tools/`](./tools/) directory.
+
+*   **[UDCF Digital Twin v4.0 PRO](./tools/udcf_digital_twin_v4.0_pro.html)**: The flagship interactive interface for cyber-physical cutting control and real-time visualization.
+*   **[UDCF Profiler](./tools/udcf_profiler.html)**: A specialized tool for analyzing cutting profiles and dimensionless parameters.
+*   **[UDCF IPCR](./tools/udcf_ipcr.html)**: Integrated tool for physical-mechanics validation.
+
+> 💡 **Note:** To run these tools, simply download the `.html` files and open them in any modern web browser (Chrome, Firefox, or Edge). No installation is required.
+
+For detailed instructions on how to use the Digital Twin, please refer to the [**UDCF v4.0 User Guide**](./tools/UDCF_V4.0_USER_GUIDE.md).
 
 This package ensures full reproducibility of the results presented in the associated manuscript, covering Tables 2–5 and Figures 5, 6, 7, and 10.
 
