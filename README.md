@@ -1,3 +1,12 @@
+<div align="center">
+  <img src="graphical_abstract/Graphic_Abstract.png" alt="Unified Dimensionless Cutting Framework (UDCF) Graphical Abstract" width="100%">
+  <p>
+    <i><b>Graphical Abstract | The Unified Dimensionless Cutting Framework (UDCF).</b> An integrated approach combining (1) Physical Mechanics via instrumented validation, (2) Reduced-Order Energy criteria using the Dimensionless Separation Index (\(\eta\)), and (3) Cyber-Physical Control for real-time Digital Twin synchronisation.</i>
+  </p>
+</div>
+
+---
+
 # UDCF Research Tools: Unified Dimensionless Cutting Framework
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22112130.svg)](https://doi.org/10.5281/zenodo.22112130)
