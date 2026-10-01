@@ -11,7 +11,7 @@
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.22112130.svg)](https://doi.org/10.5281/zenodo.22112130)
 
-This repository contains the official source code, statistical benchmark scripts, and raw experimental datasets for the **Unified Dimensionless Cutting Framework (UDCF)**. These tools support the **UDCF Profiler v3.1** , **Instrumented Pendulum Cutting Rig (IPCR) v3.1** and the UDCF Digital Twin v4.0 PRO.
+This repository contains the official source code, statistical benchmark scripts, and raw experimental datasets for the **Unified Dimensionless Cutting Framework (UDCF)**. These tools support the **UDCF Profiler v3.1** , **Instrumented Pendulum Cutting Rig (IPCR) v3.1** and the **UDCF Digital Twin v4.0 PRO**.
 
 This package ensures full reproducibility of the results presented in the associated manuscript, covering Tables 2–5 and Figures 5, 6, 7, and 10.
 
